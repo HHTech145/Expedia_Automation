@@ -140,8 +140,19 @@ class Database:
         finally:
             cursor.close()
    
+    
+    def truncate_url(self,url):
+        # Find the cutoff point
+        cutoff = url.find(".Hotel-Information")
+        if cutoff != -1:
+            # Include ".Hotel-Information" in the result
+            return url[:cutoff + len(".Hotel-Information")]
+        return url  # Return the original URL if no cutoff point is found
+
+
     def insert_hotel_data(self, hotel_data):
         try:
+            print(" in insert hotel db ------------------------------------------------",hotel_data['hotel_details']['hotel_name'])
             cursor = self.connection.cursor()
             hotel_details = hotel_data['hotel_details']
             # hotel_details = hotel_data['hotel_details']
@@ -167,6 +178,11 @@ class Database:
             if hotel_rating == 'null':
                 hotel_rating = None
             # Insert hotel data
+            if type(hotel_details['additional_rating']) is str:
+                hotel_details['additional_rating']=0.1
+
+            hotel_details['url']=self.truncate_url(hotel_details['url'])
+
             cursor.execute("""
                 INSERT INTO hotels (hotel_name, hotel_address, hotel_rating, additional_rating, hotel_description, url)
                 VALUES (%s, %s, %s, %s, %s, %s)
@@ -324,7 +340,7 @@ class Database:
         try:
             print("in process_and_insert")
             # print(f"Inserting hotel: {hotel_data.get('hotel_details', {}).get('hotel_name', 'Unknown')}")
-            print("hotel_data__________________________________________________",hotel_data)
+            # print("hotel_data__________________________________________________",hotel_data)
             self.insert_hotel_data(hotel_data)
             # break
         except Exception as err:
@@ -371,3 +387,6 @@ if __name__ == "__main__":
     # Close the connection
     # Close the database connection
     db.close_connection()
+
+
+    # connection = mysql.connector.connect(host="localhost",user="my_user",password="new_password")

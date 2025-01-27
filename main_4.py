@@ -97,13 +97,13 @@ class WebDriverManager():
         # options.add_argument("--disable-blink-features=AutomationControlled")  # Prevent automation detection
         # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
         # adding argument to disable the AutomationControlled flag 
-        options.add_argument("--disable-blink-features=AutomationControlled") 
+        # options.add_argument("--disable-blink-features=AutomationControlled") 
         
-        # exclude the collection of enable-automation switches 
-        options.add_experimental_option("excludeSwitches", ["enable-automation"]) 
+        # # exclude the collection of enable-automation switches 
+        # options.add_experimental_option("excludeSwitches", ["enable-automation"]) 
         
-        # turn-off userAutomationExtension 
-        options.add_experimental_option("useAutomationExtension", False) 
+        # # turn-off userAutomationExtension 
+        # options.add_experimental_option("useAutomationExtension", False) 
 
         # Optional: Specify Chrome executable path if needed
         # browser_executable_path = "chromedriver.exe"
@@ -1233,11 +1233,11 @@ class WebDriverManager():
                 # Scroll to the bottom of the page
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 
+                sleep(5)
                 # Wait for the button to become clickable
                 show_more_button = WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//button[text()='Show more']"))
-                )
-                
+                )                
                 # Click the button
                 show_more_button.click()
                 print("Clicked 'Show more' button")
@@ -1286,7 +1286,7 @@ class WebDriverManager():
         # sleep(40000)
         self.driver.execute_script("document.body.style.zoom='20%'")
         sleep(4)
-        json_handler=JsonDataHandler(file_path="oxford.json")
+        json_handler=JsonDataHandler(file_path="Maldives.json")
         # json_handler.hotel_exists("White Fort Hotel")
 
         hotel_name= self.get_hotel_name_from_web()
@@ -1295,39 +1295,39 @@ class WebDriverManager():
         if hotel_name is not None:
             check_hotel=json_handler.hotel_exists(hotel_name)
 
-        if check_hotel is False:
-        # hotel_name,hotel_details,hotel_amenities=self.hotel_details(url)
+        # if check_hotel is False:
+        # # hotel_name,hotel_details,hotel_amenities=self.hotel_details(url)
 
-            neighbourhood=self.get_hotel_neighbourhood_data()
-            # sleep(4000)
-            images_data=self.get_hotel_photos()
-            # sleep(4000)
-            # self.get_room_details()
+        #     neighbourhood=self.get_hotel_neighbourhood_data()
+        #     # sleep(4000)
+        #     images_data=self.get_hotel_photos()
+        #     # sleep(4000)
+        #     # self.get_room_details()
             
-            # sleep(20000)
-            hotel_name,hotel_details,hotel_amenities=self.hotel_details(url)
-            room_details=self.get_room_details()
+        #     # sleep(20000)
+        #     hotel_name,hotel_details,hotel_amenities=self.hotel_details(url)
+        #     room_details=self.get_room_details()
 
-            # Fetch hotel details and room details
-            # hotel_name, hotel_details, hotel_amenities = self.hotel_details(url)
-            # room_details = self.get_room_details()
-            # json_handler=JsonDataHandler()
-            # Save data to JSON using JsonDataHandler
-            # sleep(10000)
-            json_handler.save_to_json(hotel_name, hotel_details, hotel_amenities, room_details,images_data,neighbourhood)
+        #     # Fetch hotel details and room details
+        #     # hotel_name, hotel_details, hotel_amenities = self.hotel_details(url)
+        #     # room_details = self.get_room_details()
+        #     # json_handler=JsonDataHandler()
+        #     # Save data to JSON using JsonDataHandler
+        #     # sleep(10000)
+        #     json_handler.save_to_json(hotel_name, hotel_details, hotel_amenities, room_details,images_data,neighbourhood)
 
-            hotel_json_data=json_handler.get_hotel_data(hotel_name=hotel_name)
-            print("insertign hotel into database -------------------------")
+        #     hotel_json_data=json_handler.get_hotel_data(hotel_name=hotel_name)
+        #     print("insertign hotel into database -------------------------")
 
-            db.process_and_insert_single_hotel(hotel_json_data)
-            print("###############################################################################\n")
-            image_downloader.process_single_hotel(hotel_name)    
+        #     db.process_and_insert_single_hotel(hotel_json_data)
+        #     print("###############################################################################\n")
+        #     image_downloader.process_single_hotel(hotel_name)    
             # sleep(10000)
         if check_hotel is True:
             # json_handler.save_to_json(hotel_name, hotel_details, hotel_amenities, room_details,images_data,neighbourhood)
 
             hotel_json_data=json_handler.get_hotel_data(hotel_name=hotel_name)
-            print("inserting hotel into database -------------------------")
+            print("inserting hotel into database --------------------------------------------------------------",hotel_name)
 
             db.process_and_insert_single_hotel(hotel_json_data)
             image_downloader.process_single_hotel(hotel_name)    
@@ -1744,7 +1744,10 @@ if __name__ == "__main__":
     # url=generate_url()
 
     # print("Url ------------------------------",url)
-    url="https://www.expedia.com/Hotel-Search?adults=2&children=&d1=2025-01-21&d2=2025-01-22&destination=Oxford%2C%20England%2C%20United%20Kingdom&endDate=2025-01-22&latLong=51.752026%2C-1.257731&mapBounds=&regionId=9272&rooms=1&semdtl=&sort=RECOMMENDED&startDate=2025-01-21&theme=&useRewards=true&userIntent=&isInvalidatedDate=false&pwaDialog="
+    # url="https://www.expedia.com/Hotel-Search?adults=2&d1=2025-02-27&d2=2025-02-28&destination=Mauritius&endDate=2025-02-28&flexibility=0_DAY&isInvalidatedDate=false&latLong=-20.348404%2C57.552151&regionId=115&rooms=1&semdtl=&sort=PRICE_LOW_TO_HIGH&startDate=2025-02-27&stay_options_group=hotels_option&theme=&useRewards=true&userIntent="
+    
+    url="https://www.expedia.com/Hotel-Search?adults=2&children=&d1=2025-02-27&d2=2025-02-28&destination=Maldives&endDate=2025-07-19&isInvalidatedDate=false&latLong=4.177988%2C73.510739&mapBounds=&pwaDialog=&regionId=109&rooms=1&semdtl=&sort=RECOMMENDED&startDate=2025-07-18&stay_options_group=hotels_option&theme=&useRewards=true&userIntent="
+    
     # sleep(4000)
     obj.open_site(url)
     obj.scroll_and_click_show_more()                                                                  

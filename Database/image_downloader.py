@@ -5,7 +5,7 @@ import logging
 from Database.connector import Database
 
 class HotelImageDownloader:
-    def __init__(self, db_config, base_folder="Database/image_data", log_file="hotel_image_downloader.log"):
+    def __init__(self, db_config, base_folder="Database/image_data_maldives", log_file="hotel_image_downloader.log"):
         """
         Initialize the downloader with database connection, base folder for images, and logging.
         """
@@ -111,11 +111,12 @@ class HotelImageDownloader:
         Process a single hotel by name, downloading its images.
         """
         try:
+            print("in image downloader ---------------------------------------",hotel_name)
             # Use parameterized query to avoid SQL syntax errors and injection
             query = "SELECT hotel_id, hotel_name FROM hotels WHERE hotel_name = %s;"
             self.cursor.execute(query, (hotel_name,))
             hotel = self.cursor.fetchone()
-            print(hotel,type(hotel))
+            print("-test fetch----------------------------------------------",hotel,type(hotel))
 
             ###
             hotel_id, hotel_name = hotel
